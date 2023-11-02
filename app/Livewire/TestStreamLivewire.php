@@ -10,13 +10,15 @@ class TestStreamLivewire extends Component
     public $ids =  [];
     public function process(){
         foreach ($this->ids as $id => $detail){
-            $this->ids[$id]['status'] = "WIP";
+            if($detail['checked'])
+            {
+                $this->ids[$id]['status'] = "WIP";
+                $this->stream(to:"process$id" ,content:$this->ids[$id]['status'],replace: true);
+                sleep(2);
+                $this->ids[$id]['status'] = "ok";
+                $this->stream(to:"process$id" ,content:$this->ids[$id]['status'],replace: true);
+            }
 
-//            dd($this->ids);
-            $this->stream(to:'process'. $id,content:$this->ids[$id]['status'],replace: true);
-
-            sleep(2);
-            $this->ids[$id]['status'] = "ok";
         }
     }
 
